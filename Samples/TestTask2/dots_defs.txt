@@ -1,0 +1,2 @@
+dot1 dot1_key_points.txt linear
+dot2 dot2_key_points.txt linear
