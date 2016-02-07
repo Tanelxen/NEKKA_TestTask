@@ -1,1 +1,1 @@
-dot1­>dot2
+dot1 -> dot2

@@ -4,89 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Interpolation
+namespace TestTask
 {
-    public class Point2D
-    {
-        public float x;
-        public float y;
-
-        public Point2D()
-        {
-            x = 0.0f;
-            y = 0.0f;
-        }
-        public Point2D(float x, float y)
-        {
-            this.x = x;
-            this.y = y;
-        }
-        public static Point2D operator + (Point2D obj1, Point2D obj2)
-        {
-            Point2D result = new Point2D();
-            result.x = obj1.x + obj2.x;
-            result.y = obj1.y + obj2.y;
-            return result;
-        }
-        public static Point2D operator - (Point2D obj1, Point2D obj2)
-        {
-            Point2D result = new Point2D();
-            result.x = obj1.x - obj2.x;
-            result.y = obj1.y - obj2.y;
-            return result;
-        }
-        public static Point2D operator * (Point2D obj, float mul)
-        {
-            Point2D result = new Point2D();
-            result.x = obj.x * mul;
-            result.y = obj.y * mul;
-            return result;
-        }
-        public static Point2D operator * (float mul, Point2D obj)
-        {
-            Point2D result = new Point2D();
-            result.x = obj.x * mul;
-            result.y = obj.y * mul;
-            return result;
-        }
-        public static Point2D operator / (Point2D obj, float div)
-        {
-            Point2D result = new Point2D();
-            result.x = obj.x / div;
-            result.y = obj.y / div;
-            return result;
-        }
-        public string ToString(String delimeter = " ")
-        {
-            return x + delimeter + y;
-        }
-    }
-    
-    public class KeyFrame
-    {
-        public KeyFrame()
-        {
-            this.t = 0;
-        }
-        public KeyFrame(float t, float x, float y)
-        {
-            this.t = t;
-            point = new Point2D(x, y);
-        }
-        public KeyFrame(float t, Point2D point)
-        {
-            this.t = t;
-            this.point = point;
-        }
-        public string ToString(String delimeter = " ")
-        {
-            return t + delimeter + point.x + delimeter + point.y;
-        }
-        
-        public float t;
-        public Point2D point = new Point2D();
-    }
-
     public class Interpolator2D
     {
         public virtual KeyFrame Calculate(float timestamp, List<KeyFrame> source)
@@ -119,6 +38,20 @@ namespace Interpolation
 
             return index;
         }
+
+        public static Interpolator2D GetByName(String name)
+        {
+            Interpolator2D interp = interpolators.Find(p => p.ToString() == name);
+
+            if (interp == null && interpolators.Count > 0)
+            {
+                interp = interpolators[0];
+            }
+
+            return interp;
+        }
+
+        public static List<Interpolator2D> interpolators = new List<Interpolator2D>();
     };
 
     public class LinearInterpolator2D : Interpolator2D

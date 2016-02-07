@@ -8,9 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using System.Drawing;
-
-namespace Interpolation
+namespace TestTask
 {
     public partial class AppForm : Form
     {
@@ -83,13 +81,13 @@ namespace Interpolation
             {
                 char[] delimeters = { ' ', ';', '\t' };
                 
-                String[] pair = lines[i].Split(delimeters);
+                String[] triplet = lines[i].Split(delimeters);
 
-                if (pair.Length == 3)
+                if (triplet.Length == 3)
                 {
                     float t, x, y;
 
-                    if (float.TryParse(pair[0], out t) && float.TryParse(pair[1], out x) && float.TryParse(pair[2], out y))
+                    if (float.TryParse(triplet[0], out t) && float.TryParse(triplet[1], out x) && float.TryParse(triplet[2], out y))
                     {
                         keyframes.Add(new KeyFrame(t, x, y));
                     }

@@ -1,4 +1,4 @@
-﻿namespace Interpolation
+﻿namespace TestTask
 {
     partial class AppForm
     {
