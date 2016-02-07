@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using TestTaskLibrary;
+
 namespace TestTask
 {
     public partial class AppForm : Form
@@ -50,7 +52,7 @@ namespace TestTask
 
             if( trajectory.Count > 0 )
             {
-                Log.AppendText("Calculated\n");
+                Logger.Write("Calculated");
                 SaveButton.Enabled = true;
             }
         }
@@ -71,13 +73,13 @@ namespace TestTask
             string data_path = OpenDataDialog.FileName;
             data_file_name.Text = System.IO.Path.GetFileName(data_path);
 
-            Log.AppendText(data_path + "\n");
+            Logger.Write(data_path);
 
             List<string> lines = File.ReadAllLines(data_path).ToList();
 
             keyframes.Clear();
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
                 char[] delimeters = { ' ', ';', '\t' };
                 
@@ -93,12 +95,12 @@ namespace TestTask
                     }
                     else
                     {
-                        Log.AppendText("ERROR: can't parse at line " + i + ", \"" + lines[i] + "\"" + "\n");
+                        Logger.Write("ERROR: can't parse at line " + i + ", \"" + lines[i] + "\"");
                     }
                 }
                 else
                 {
-                    Log.AppendText("ERROR: can't parse at line " + i + ", expected three values\n");
+                    Logger.Write("ERROR: can't parse at line " + i + ", expected three values");
                 }
             }
         }
@@ -113,13 +115,13 @@ namespace TestTask
             string args_path = OpenDataDialog.FileName;
             args_file_name.Text = System.IO.Path.GetFileName(args_path);
 
-            Log.AppendText(args_path + "\n");
+            Logger.Write(args_path);
 
             List<string> lines = File.ReadAllLines(args_path).ToList();
 
             timeline.Clear();
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
                 float t;
 
@@ -129,7 +131,7 @@ namespace TestTask
                 }
                 else
                 {
-                    Log.AppendText("ERROR: can't parse at line " + i + ", \"" + lines[i] + "\"" + "\n");
+                    Logger.Write("ERROR: can't parse at line " + i + ", \"" + lines[i] + "\"");
                 }
             }
 
@@ -156,14 +158,14 @@ namespace TestTask
 
             string path = SaveDataDialog.FileName;
 
-            Log.AppendText(path + "\n");
+            Logger.Write(path);
 
             
-            String lines = ""; // = trajectory.Count + "\n";
+            String lines = "" + trajectory.Count;
 
             for (int i = 0; i < trajectory.Count; i++)
             {
-                lines += trajectory[i].ToString(" ") + "\n";
+                lines += "\n" + trajectory[i].ToString(" ");
             }
 
             File.WriteAllText(path, lines);

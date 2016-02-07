@@ -5,8 +5,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
 using System.Windows.Forms;
+
+using TestTaskLibrary;
 
 namespace TestTask
 {
@@ -54,7 +58,7 @@ namespace TestTask
 
             nodes.Clear();
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
                 char[] delimeters = { ' ', ';', '\t' };
                 
@@ -75,7 +79,7 @@ namespace TestTask
                         Logger.Write("ERROR: can't find path = " + keyframe_file_path);
                     }
 
-                    if (node.vertex.frames.Count > 0)
+                    if (node.vertex.frames != null && node.vertex.frames.Count > 0)
                     {
                         node.vertex.current_keyframe = node.vertex.frames[0];
                         nodes.Add(node);
@@ -98,11 +102,11 @@ namespace TestTask
 
             keyframes.Clear();
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
                 char[] delimeters = { ' ', ';', '\t' };
 
-                String[] triplet = lines[i].Split(delimeters);
+                String[] triplet = lines[i].Split(delimeters, 3, StringSplitOptions.RemoveEmptyEntries);
 
                 if (triplet.Length == 3)
                 {
@@ -141,9 +145,9 @@ namespace TestTask
             List<string> lines = File.ReadAllLines(args_path).ToList();
 
 
-            for (int i = 0; i < lines.Count; i++)
+            for (int i = 1; i < lines.Count; i++)
             {
-                var rx = new System.Text.RegularExpressions.Regex(" -> ");
+                var rx = new Regex(" -> ");
 
                 String[] pair = rx.Split(lines[i]);
 
@@ -166,14 +170,18 @@ namespace TestTask
 
         private void CalculateButton_Click(object sender, EventArgs e)
         {
-            float t = 0.0f;
+            //float t = 0.0f;
 
-            if( !float.TryParse(TextBox_CurrentTime.Text, out t) )
-            {
-                Logger.Write("ERROR: can't parse time = " + TextBox_CurrentTime.Text);
-            }
+            //if( !float.TryParse(TextBox_CurrentTime.Text, out t) )
+            //{
+            //    Logger.Write("ERROR: can't parse time = " + TextBox_CurrentTime.Text);
+            //}
 
-            t = 2.0f;
+            float t = float.Parse(TextBox_CurrentTime.Text, CultureInfo.InvariantCulture);
+
+            Logger.Write("t = " + t);
+
+            //t = 2.0f;
 
             foreach (Node node in nodes)
             {
@@ -223,19 +231,4 @@ namespace TestTask
         }
 
     }
-
-
-    public static class Logger
-    {
-        public static TextBox log;
-
-        public static void Write( String line )
-        {
-            if(log != null)
-            {
-                log.AppendText(line + "\n");
-            }
-        }
-    }
-
 }
