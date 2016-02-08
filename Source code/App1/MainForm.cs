@@ -25,11 +25,17 @@ namespace TestTask
         {
             InitializeComponent();
 
-            AddInterpolator( new LinearInterpolator2D() );
-            AddInterpolator( new QuadraticInterpolator2D() );
-            AddInterpolator( new CubicInterpolator2D() );
+            Interpolator2D.LoadPlugins();
+
+            foreach (Interpolator2D interp in Interpolator2D.interpolators)
+            {
+                AddInterpolator(interp);
+            }
 
             SaveButton.Enabled = false;
+
+            OpenDataDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            SaveDataDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         }
 
         private void Calculate()
@@ -107,6 +113,8 @@ namespace TestTask
 
         private void args_file_name_Click(object sender, EventArgs e)
         {
+            OpenDataDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory; 
+            
             if (OpenDataDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
             {
                 return;

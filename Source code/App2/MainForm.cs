@@ -24,20 +24,18 @@ namespace TestTask
 
             Logger.log = this.Log;
 
-            AddInterpolator( new LinearInterpolator2D() );
-            AddInterpolator( new QuadraticInterpolator2D() );
-            AddInterpolator( new CubicInterpolator2D() );
+            Interpolator2D.LoadPlugins();
 
             SaveButton.Enabled = false;
+
+            OpenDataDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
+            SaveDataDialog.InitialDirectory = System.AppDomain.CurrentDomain.BaseDirectory;
         }
+
+
 
         private void Calculate()
         {
-        }
-
-        private void AddInterpolator(Interpolator2D interpolator)
-        {
-            Interpolator2D.interpolators.Add(interpolator);
         }
 
         private void defs_file_name_Click(object sender, EventArgs e)
